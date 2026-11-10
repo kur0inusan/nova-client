@@ -1,0 +1,46 @@
+plugins {
+    id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+    id 'legacy-looming' version "${loom_version}"
+}
+
+version = "${project.mod_version}+mc${project.minecraft_version}"
+group = project.maven_group
+base {
+    archivesName = 'nova'
+}
+
+// Version-independent code is compiled straight into this mod. Compiling it with
+// release 8 here is what guarantees core stays Java 8 compatible.
+sourceSets.main.java.srcDir '../core/src/main/java'
+sourceSets.main.resources.srcDir '../core/src/main/resources'
+
+loom {
+    // Loom's generated log4j config needs a newer log4j than 1.8.9 ships, which leaves dev logs empty.
+    log4jConfigs.setFrom(file('log4j2-dev.xml'))
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings(legacy.yarn(project.minecraft_version, project.yarn_build))
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.legacyfabric.legacy-fabric-api:legacy-fabric-api:${project.fabric_version}"
+}
+
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand 'version': inputs.properties.version
+    }
+}
+
+java {
+    toolchain {
+        // Minecraft 1.8.9 (LWJGL 2) only runs on Java 8.
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xlint:-options'
+}

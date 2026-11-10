@@ -1,0 +1,30 @@
+// Standalone build for the version-independent core.
+// The version builds (v26, v1_8_9) compile src/main/java directly as an extra source dir;
+// this build exists to run unit tests and to enforce Java 8 compatibility.
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Minecraft 1.8.9 bundles Gson 2.2.4, so compile against that API surface.
+    compileOnly 'com.google.code.gson:gson:2.2.4'
+    testImplementation 'com.google.code.gson:gson:2.2.4'
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 8
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach { options.compilerArgs << '-Xlint:-options' }

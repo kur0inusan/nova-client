@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "nova",
+  "version": "${version}",
+  "name": "Nova Client",
+  "description": "A modern PvP client: movable HUD mods and a clean UI.",
+  "authors": ["kuroinusan"],
+  "license": "All-Rights-Reserved",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["dev.kuroinu.nova.legacy.NovaLegacy"]
+  },
+  "mixins": ["nova.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "1.8.9"
+  }
+}

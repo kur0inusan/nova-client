@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "dev.kuroinu.nova.legacy.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "GameOptionsMixin",
+    "InGameHudMixin",
+    "KeyBindingMixin",
+    "MinecraftClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

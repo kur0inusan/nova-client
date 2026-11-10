@@ -1,0 +1,43 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = "${project.mod_version}+mc${project.minecraft_version}"
+group = project.maven_group
+base {
+    archivesName = 'nova'
+}
+
+// Version-independent code is compiled straight into this mod.
+sourceSets.main.java.srcDir '../core/src/main/java'
+sourceSets.main.resources.srcDir '../core/src/main/resources'
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+}
+
+// Dev convenience: `gradlew runClient -PquickPlay="New World"` loads straight into a world.
+if (project.hasProperty('quickPlay')) {
+    loom.runs.client.programArgs('--quickPlaySingleplayer', project.property('quickPlay').toString())
+}
+
+processResources {
+    def version = project.version
+    inputs.property 'version', version
+    filesMatching('fabric.mod.json') {
+        expand 'version': version
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 25
+}

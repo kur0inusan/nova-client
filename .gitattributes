@@ -1,0 +1,6 @@
+# Shell scripts must keep LF endings or they won't run on macOS/Linux.
+gradlew      text eol=lf
+*.sh         text eol=lf
+*.command    text eol=lf
+# Windows scripts
+*.bat        text eol=crlf
