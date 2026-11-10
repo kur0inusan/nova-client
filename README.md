@@ -1,6 +1,6 @@
 # Nova Client (仮名)
 
-Soar / Glide 系のモダン PvP クライアント。1.8.9 (Legacy Fabric) と 26.3 (Fabric) に対応。
+PvP クライアント 1.8.9 (Legacy Fabric) と 26.3 (Fabric) に対応。
 
 ## 構成
 
@@ -32,5 +32,3 @@ cd mod\v1_8_9;  .\gradlew runClient   # 1.8.9 開発クライアント
    - HUD 以外 → `Module` を継承し、`on(Events.Tick.class, e -> ...)` でイベントを受け取る
 2. 設定は `add(new BooleanSetting(...))` などで宣言する。保存は自動で行われる
 3. `Modules.registerDefaults()` に1行追加する
-
-ゲーム内では、**右 Shift** で HUD エディタを開く。操作はドラッグで移動、ホイールで拡大縮小、右クリックで非表示。
