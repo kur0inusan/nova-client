@@ -3,11 +3,18 @@ package dev.kuroinu.nova.legacy;
 import com.mojang.blaze3d.platform.GlStateManager;
 import dev.kuroinu.nova.platform.ArmorPiece;
 import dev.kuroinu.nova.platform.EffectInfo;
+import dev.kuroinu.nova.platform.EntityInfo;
 import dev.kuroinu.nova.platform.Platform;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -261,6 +268,42 @@ public final class LegacyPlatform implements Platform {
     public String getClipboard() {
         String s = net.minecraft.client.gui.screen.Screen.getClipboard();
         return s == null ? "" : s;
+    }
+
+    @Override
+    public EntityInfo getEntity(int id, float partialTicks) {
+        MinecraftClient mc = mc();
+        if (mc.world == null) {
+            return null;
+        }
+        Entity e = mc.world.getEntityById(id);
+        if (!(e instanceof LivingEntity) || e instanceof ArmorStandEntity || e == mc.player) {
+            return null;
+        }
+        LivingEntity living = (LivingEntity) e;
+        EntityInfo.Kind kind = e instanceof PlayerEntity ? EntityInfo.Kind.PLAYER
+                : e instanceof Monster ? EntityInfo.Kind.MOB
+                : EntityInfo.Kind.ANIMAL;
+        return new EntityInfo(id, kind,
+                e.prevTickX + (e.x - e.prevTickX) * partialTicks,
+                e.prevTickY + (e.y - e.prevTickY) * partialTicks,
+                e.prevTickZ + (e.z - e.prevTickZ) * partialTicks,
+                e.width, e.height,
+                living.isAlive() && living.getHealth() > 0,
+                e.isInvisible(),
+                e instanceof PlayerEntity && ((PlayerEntity) e).isSpectator());
+    }
+
+    @Override
+    public int getCrosshairEntityId() {
+        BlockHitResult hit = mc().result;
+        return hit != null && hit.type == BlockHitResult.Type.ENTITY && hit.entity != null
+                ? hit.entity.getEntityId() : -1;
+    }
+
+    @Override
+    public Object getWorld() {
+        return mc().world;
     }
 
     @Override

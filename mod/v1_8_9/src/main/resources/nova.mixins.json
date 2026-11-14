@@ -3,7 +3,9 @@
   "package": "dev.kuroinu.nova.legacy.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "ClientPlayerInteractionManagerMixin",
     "GameOptionsMixin",
+    "GameRendererMixin",
     "InGameHudMixin",
     "KeyBindingMixin",
     "MinecraftClientMixin"

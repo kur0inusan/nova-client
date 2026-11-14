@@ -9,6 +9,7 @@ import dev.kuroinu.nova.module.impl.hud.FpsHud;
 import dev.kuroinu.nova.module.impl.hud.KeystrokesHud;
 import dev.kuroinu.nova.module.impl.hud.PingHud;
 import dev.kuroinu.nova.module.impl.hud.PotionEffectsHud;
+import dev.kuroinu.nova.module.impl.visual.TargetMarker;
 
 /** The single place built-in modules are registered. Add new modules here. */
 public final class Modules {
@@ -24,6 +25,7 @@ public final class Modules {
         m.register(new PotionEffectsHud());
         m.register(new PingHud());
         m.register(new ClockHud());
+        m.register(new TargetMarker());
         m.register(new ClickGuiSettings());
         m.register(new MainMenuSettings());
         m.register(new ClientSettings());

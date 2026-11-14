@@ -93,6 +93,24 @@ public interface Platform {
     /** Current clipboard text ("" when empty or unavailable). */
     String getClipboard();
 
+    /**
+     * A living entity in the current world, positioned for the frame being rendered, or null when
+     * it no longer exists (or this version doesn't support world entities yet).
+     */
+    default EntityInfo getEntity(int id, float partialTicks) {
+        return null;
+    }
+
+    /** Id of the entity under the crosshair, or -1. */
+    default int getCrosshairEntityId() {
+        return -1;
+    }
+
+    /** Identity of the loaded world; a different object after a world change or reconnect. Null outside a world. */
+    default Object getWorld() {
+        return null;
+    }
+
     enum VanillaScreen {
         SINGLEPLAYER, MULTIPLAYER, OPTIONS, LANGUAGE
     }

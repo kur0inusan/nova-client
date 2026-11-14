@@ -1,6 +1,7 @@
 package dev.kuroinu.nova.event;
 
 import dev.kuroinu.nova.render.Renderer;
+import dev.kuroinu.nova.render.Renderer3D;
 
 /** Built-in events posted by the version-specific hooks. */
 public final class Events {
@@ -44,6 +45,26 @@ public final class Events {
             this.key = key;
             this.pressed = pressed;
             this.inScreen = inScreen;
+        }
+    }
+
+    /** Posted after the world is drawn and before the first-person hand, for world-space overlays. */
+    public static final class Render3D {
+        public final Renderer3D renderer;
+        public final float partialTicks;
+
+        public Render3D(Renderer3D renderer, float partialTicks) {
+            this.renderer = renderer;
+            this.partialTicks = partialTicks;
+        }
+    }
+
+    /** The local player attacked an entity (by id, see {@link dev.kuroinu.nova.platform.Platform#getEntity}). */
+    public static final class Attack {
+        public final int entityId;
+
+        public Attack(int entityId) {
+            this.entityId = entityId;
         }
     }
 
